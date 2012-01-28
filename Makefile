@@ -3,6 +3,9 @@ DATE=$(shell date)
 BOOTSTRAP = ./bootstrap.css
 BOOTSTRAP_MIN = ./bootstrap.min.css
 BOOTSTRAP_LESS = ./lib/bootstrap.less
+BOOTSTRAP_JS = ./bootstrap-js.css
+BOOTSTRAP_JS_MIN = ./bootstrap-js.min.css
+BOOTSTRAP_JS_LESS = ./lib/bootstrap-js.less
 LESS_COMPRESSOR ?= `which lessc`
 UGLIFY_JS ?= `which uglifyjs`
 WATCHR ?= `which watchr`
@@ -10,9 +13,13 @@ WATCHR ?= `which watchr`
 build:
 	@@if test ! -z ${LESS_COMPRESSOR}; then \
 		sed -e 's/@VERSION/'"v${VERSION}"'/' -e 's/@DATE/'"${DATE}"'/' <${BOOTSTRAP_LESS} >${BOOTSTRAP_LESS}.tmp; \
+		sed -e 's/@VERSION/'"v${VERSION}"'/' -e 's/@DATE/'"${DATE}"'/' <${BOOTSTRAP_JS_LESS} >${BOOTSTRAP_JS_LESS}.tmp; \
 		lessc ${BOOTSTRAP_LESS}.tmp > ${BOOTSTRAP}; \
 		lessc ${BOOTSTRAP_LESS}.tmp > ${BOOTSTRAP_MIN} --compress; \
 		rm -f ${BOOTSTRAP_LESS}.tmp; \
+		lessc ${BOOTSTRAP_JS_LESS}.tmp > ${BOOTSTRAP_JS}; \
+		lessc ${BOOTSTRAP_JS_LESS}.tmp > ${BOOTSTRAP_JS_MIN} --compress; \
+		rm -f ${BOOTSTRAP_JS_LESS}.tmp; \
 		echo "Bootstrap successfully built! - `date`"; \
 	else \
 		echo "You must have the LESS compiler installed in order to build Bootstrap."; \
